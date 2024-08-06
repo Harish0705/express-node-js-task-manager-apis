@@ -1,8 +1,9 @@
+import { Task } from "../model/tasksSchema.js";
 
 export const createTask = async (req, res) => {
   try {
-    // const product = await Product.create(req.body);
-    return res.status(201).json({task: "Eat fibre", id: 28});
+    const task = await Task.create(req.body);
+    return res.status(201).json({task});
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -10,8 +11,8 @@ export const createTask = async (req, res) => {
 
 export const getAllTasks = async (req, res) => {
   try {
-    // const product = await Product.find({});
-    return res.status(200).json({task: "Eat Fruits", id: 30});
+    const tasks = await Task.find({});
+    return res.status(200).json({tasks});
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
