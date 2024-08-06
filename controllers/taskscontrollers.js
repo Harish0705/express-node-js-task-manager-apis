@@ -18,11 +18,11 @@ export const getAllTasks = async (req, res) => {
   }
 };
 
-export const getTasksById = async (req, res) => {
+export const getSingleTask = async (req, res) => {
   try {
-    // const { id = "" } = req.params;
-    // const product = await Product.findById(id);
-    return res.status(200).json({task: "Eat Veges", id: 31});
+    const { id: tasksId = "" } = req.params;
+    const task = await Task.findOne({_id:tasksId});
+    return res.status(200).json({task});
   } catch (error) {
     return res.status(404).json({ message: error.message });
   }
@@ -30,10 +30,14 @@ export const getTasksById = async (req, res) => {
 
 export const updateTask = async (req, res) => {
   try {
-    // const { id = "" } = req.params;
-    // await Product.findByIdAndUpdate(id, req.body);
-    // return res.status(204).send();
-    return res.status(200).json({task: "Drink Milk", id: 31});
+    const { id :tasksId = "" } = req.params;
+    await Task.findOneAndUpdate({_id:tasksId}, req.body, {
+      new: true, // sends updated the task, if not set it will send the old task
+      runValidators: true
+    });
+    // In general when we update, we will not send the data it will be 201 response without data
+    return res.status(204).send()
+    // return res.status(200).json({task});
   } catch (error) {
     return res.status(404).json({ message: error.message });
   }
@@ -41,11 +45,10 @@ export const updateTask = async (req, res) => {
 
 export const deleteTask = async (req, res) => {
   try {
-    // const { id = "" } = req.params;
-    // await Product.findByIdAndDelete(id);
-    // return res.status(204).send();
-    return res.status(200).json({message:"Tasks Deleted"})
+    const { id :tasksId = "" } = req.params;
+    await Task.findOneAndDelete({_id:tasksId});
+    return res.status(204).send();
   } catch (error) {
-    return res.status(404).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
 };
