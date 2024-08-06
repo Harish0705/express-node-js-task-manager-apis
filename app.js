@@ -1,7 +1,8 @@
 import express from "express";
+import 'dotenv/config';
 import tasksRouter from "./routes/tasksroutes.js";
 import { connectDB } from "./db/dbconnect.js";
-import 'dotenv/config'
+import { notFound } from "./middlewares/not-found.js";
 
 const app = express();
 
@@ -10,6 +11,7 @@ app.use(express.json());
 
 //routes
 app.use('/api/v1/tasks', tasksRouter)
+app.use(notFound);
 
 const port = process.env.PORT || 5000;
 
